@@ -62,6 +62,11 @@ class OrdersService:
         return OrderSchema().dump(order).data
 
     @rpc
+    def list_orders(self):
+        orders = self.db.query(Order).all()
+        return [OrderSchema().dump(order).data for order in orders]
+
+    @rpc
     def delete_order(self, order_id):
         order = self.db.query(Order).get(order_id)
         self.db.delete(order)

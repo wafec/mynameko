@@ -109,7 +109,19 @@ scenarios:
       then:
         - action: continue
 
-      # 5. Delete Product
+    # 5. List Orders
+    - url: /orders/${order_id}
+      label: order-list
+      think-time: uniform(0s, 0s)
+      method: GET
+
+      assert:
+      - contains:
+          - 200
+        subject: http-code
+        not: false
+
+      # 6. Delete Product
     - url: /products/${product_id}
       label: product-delete
       think-time: uniform(0s, 0s)

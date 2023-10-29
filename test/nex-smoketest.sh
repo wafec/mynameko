@@ -54,6 +54,11 @@ echo "=== Getting Order ==="
 curl -s "${STD_APP_URL}/orders/${ID}" | jq .
 echo
 
+# Test: List Orders
+echo "=== Listing Orders ==="
+curl -s "${STD_APP_URL}/orders" | jq .
+echo
+
 # Test: Delete Product
 echo "=== Deleting product id: the_odyssey ==="
 curl -s -XDELETE "${STD_APP_URL}/products/the_odyssey" | jq .
