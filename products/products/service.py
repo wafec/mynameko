@@ -26,6 +26,11 @@ class ProductsService:
         return schemas.Product(many=True).dump(products).data
 
     @rpc
+    def list_by_product_ids(self, product_ids):
+        products = self.storage.list_by_product_ids(product_ids)
+        return schemas.Product(many=True).dump(products).data
+
+    @rpc
     def create(self, product):
         product = schemas.Product(strict=True).load(product).data
         self.storage.create(product)
