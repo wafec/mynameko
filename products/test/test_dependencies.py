@@ -3,6 +3,7 @@ from mock import Mock
 
 from nameko import config
 from products.dependencies import Storage
+from products.exceptions import NotFound
 
 
 @pytest.fixture
@@ -46,6 +47,21 @@ def test_create(product, redis_client, storage):
     assert product['passenger_capacity'] == (
         int(stored_product[b'passenger_capacity']))
     assert product['in_stock'] == int(stored_product[b'in_stock'])
+
+
+def test_delete(product, redis_client, storage):
+    storage.create(product)
+
+    storage.delete(product['id'])
+
+    res = redis_client.hgetall('products:' + product['id'])
+
+    assert res == {}
+
+
+def test_delete_product_not_found(product, redis_client, storage):
+    with pytest.raises(NotFound) as exc_info:
+        storage.delete(product['id'])
 
 
 def test_decrement_stock(storage, create_product, redis_client):
